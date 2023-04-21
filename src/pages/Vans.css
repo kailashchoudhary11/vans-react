@@ -1,0 +1,24 @@
+.vans {
+    display: flex;
+    width: 600px;
+    flex-wrap: wrap;
+}
+
+.van {
+    width: 230px;
+    margin: 34px;
+}
+.van > .van-pic {
+    width: 100%;
+}
+
+.van .name {
+    margin-right: 20px;
+}
+
+.van .type {
+    border-radius: 5px;
+    border: none;
+    background-color: orange;
+    cursor: pointer;
+}
