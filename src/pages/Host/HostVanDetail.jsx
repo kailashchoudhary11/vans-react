@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, NavLink, Outlet } from "react-router-dom";
 import "../../server/server";
 import "./HostVanDetail.css";
 
@@ -7,6 +7,11 @@ import "./HostVanDetail.css";
 export default function HostVanDetail() {
     const [van, setVan] = React.useState(null);
     const {id} = useParams();
+    const activeStyle = {
+        fontWeight: "bold",
+        textDecoration: "underline",
+        color: "#161616",
+    };
 
     React.useEffect(() => {
         fetch(`/api/host/vans/${id}`)
@@ -42,6 +47,28 @@ export default function HostVanDetail() {
                 </div>
             </div>
         </div>
+        <nav className="host-van-detail-nav">
+            <NavLink
+                to="."
+                end
+                style={({isActive}) => isActive ? activeStyle : null}
+            >
+                Details
+            </NavLink>
+            <NavLink
+                to="pricing"
+                style={({isActive}) => isActive ? activeStyle : null}
+            >
+                Pricing
+            </NavLink>
+            <NavLink
+                to="photos"
+                style={({isActive}) => isActive ? activeStyle : null}
+            >
+                Photos
+            </NavLink>
+        </nav>
+        <Outlet context={{van}} />  
     </section>
     );
 }
