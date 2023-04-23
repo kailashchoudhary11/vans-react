@@ -11,22 +11,22 @@ export default function Navbar() {
 
     return (
         <header>
-            <Link className="site-logo" to="/">#VanLife</Link>
+            <Link className="site-logo" to=".">#VanLife</Link>
             <nav>
                 <NavLink 
-                    to="/host" 
+                    to="host" 
                     style={({isActive}) => isActive ? activeStyle : null}>
                     Host
                 </NavLink>
 
                 <NavLink 
-                    to="/about" 
+                    to="about" 
                     style={({isActive}) => isActive ? activeStyle : null}>
                     About
                 </NavLink>
 
                 <NavLink 
-                    to="/vans" 
+                    to="vans" 
                     style={({isActive}) => isActive ? activeStyle : null}>
                     Vans
                 </NavLink>
