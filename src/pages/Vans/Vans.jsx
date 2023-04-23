@@ -12,36 +12,25 @@ export default function Vans() {
             .then(data => setVansData(data.vans));
     }, []);
 
-    const vansComps = vansData.map((van, i) =>
-        <Link key={i} to={`/vans/${van.id}`}>
-            <div className="van">
-                <img className="van-pic" src={van.imageUrl} />
-                <div className="info">
-                    <span className="name">
-                        {van.name}
-                    </span>
-                    <span className="price">
-                        ${van.price}/day
-                    </span>
+    const vansComps = vansData.map(van =>
+        <div key={van.id} className="van-tile">
+            <Link to={`/vans/${van.id}`}>
+                <img src={van.imageUrl} />
+                <div className="van-info">
+                    <h3>{van.name}</h3>
+                    <p>${van.price}<span>/day</span></p>
                 </div>
-                <button className="type">
-                    {van.type.charAt(0).toUpperCase() + van.type.slice(1)}
-                </button>
-            </div>
-        </Link>
+                <i className={`van-type ${van.type} selected`}>{van.type}</i>
+            </Link>
+        </div>
     );
 
     return (
-        <>
-            <h1>Explore our Vans</h1>
-            {
-                vansData.length > 0 ?
-                    <div className="vans">
-                        {vansComps}
-                    </div>
-                    :
-                    <h1>Loading...</h1>
-            }
-        </>
+        <div className="van-list-container">
+            <h1>Explore our van options</h1>
+            <div className="van-list">
+                {vansComps}
+            </div>
+        </div>
     );
 }
