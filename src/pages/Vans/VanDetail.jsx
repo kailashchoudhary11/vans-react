@@ -1,11 +1,12 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import {Link, useParams, useLocation } from "react-router-dom";
 import "../../server/server";
 import "./VanDetail.css";
 
 export default function VanDetail() {
     const { id } = useParams();
     const [van, setVan] = React.useState({});
+    const {state} = useLocation();
 
     React.useEffect(() => {
         fetch(`/api/vans/${id}`)
@@ -15,6 +16,14 @@ export default function VanDetail() {
 
     return (
         <div className="van-detail-container">
+            <Link
+            relative="path"
+            to={`../?${state?.searchParams ? state.searchParams : ""}`}
+            className="back-button"
+        >
+            &larr; <span>Back to {`${state?.type ? state.type : "all"}`} vans</span>
+        </Link>
+
             {van ? (
                 <div className="van-detail">
                     <img src={van.imageUrl} />

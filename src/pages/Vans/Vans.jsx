@@ -22,7 +22,10 @@ export default function Vans() {
 
     const vansComps = filteredVansData.map(van =>
         <div key={van.id} className="van-tile">
-            <Link to={van.id}>
+            <Link 
+                to={van.id}
+                state={{searchParams: searchParams.toString(), type: typeFilter}}
+            >
                 <img src={van.imageUrl} />
                 <div className="van-info">
                     <h3>{van.name}</h3>
