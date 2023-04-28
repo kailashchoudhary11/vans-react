@@ -2,6 +2,7 @@ import React from "react";
 import { useParams, Link, NavLink, Outlet } from "react-router-dom";
 import "../../server/server";
 import "./HostVanDetail.css";
+import { fetchData } from "../../api";
 
 
 export default function HostVanDetail() {
@@ -14,9 +15,11 @@ export default function HostVanDetail() {
     };
 
     React.useEffect(() => {
-        fetch(`/api/host/vans/${id}`)
-            .then(res => res.json())
-            .then(data => setVan(data.vans[0]));
+        async function loadHostVan() {
+            const data = await fetchData(`/api/host/vans/${id}`);
+            setVan(data.vans[0]);
+        }
+        loadHostVan();
     }, [id]);
 
     if (!van) {

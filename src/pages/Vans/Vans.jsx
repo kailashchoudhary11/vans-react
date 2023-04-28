@@ -2,6 +2,7 @@ import React from "react";
 import "../../server/server";
 import "./Vans.css";
 import { Link, useSearchParams } from "react-router-dom";
+import { fetchData } from "../../api";
 
 export default function Vans() {
     const [vansData, setVansData] = React.useState([]);
@@ -10,9 +11,11 @@ export default function Vans() {
     const typeFilter = searchParams.get("type");
 
     React.useEffect(() => {
-        fetch("/api/vans")
-            .then(res => res.json())
-            .then(data => setVansData(data.vans));
+        async function setData() {
+            const data = await fetchData("/api/vans")
+            setVansData(data.vans);
+        }
+        setData();
     }, []);
 
     const filteredVansData =  typeFilter ? 

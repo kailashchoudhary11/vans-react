@@ -2,6 +2,7 @@ import React from "react";
 import {Link, useParams, useLocation } from "react-router-dom";
 import "../../server/server";
 import "./VanDetail.css";
+import { fetchData } from "../../api";
 
 export default function VanDetail() {
     const { id } = useParams();
@@ -9,9 +10,11 @@ export default function VanDetail() {
     const {state} = useLocation();
 
     React.useEffect(() => {
-        fetch(`/api/vans/${id}`)
-            .then(res => res.json())
-            .then(data => setVan(data.vans));
+        async function loadVan() {
+            const data = await fetchData(`/api/vans/${id}`);
+            setVan(data.vans);
+        }
+        loadVan();
     }, []);
 
     return (

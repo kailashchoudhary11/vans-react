@@ -2,14 +2,17 @@ import React from "react";
 import "../../server/server";
 import "./HostVans.css";
 import { Link } from "react-router-dom";
+import { fetchData } from "../../api";
 
 export default function HostVans() {
     const [hostVans, setHostVans] = React.useState([]);
 
     React.useEffect(() => {
-        fetch("/api/host/vans")
-            .then(res => res.json())
-            .then(data => setHostVans(data.vans));
+        async function loadHostVans() {
+            const data = await fetchData("/api/host/vans");
+            setHostVans(data.vans);
+        }
+        loadHostVans();
     }, []);
 
     const hostVanEls = hostVans.map(van => (
