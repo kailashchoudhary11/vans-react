@@ -1,27 +1,23 @@
 import React from "react";
 import "../../server/server";
 import "./Vans.css";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useSearchParams, useLoaderData } from "react-router-dom";
 import { fetchData } from "../../api";
 
+export function loader() {
+    return fetchData("/api/vans");
+}
+
 export default function Vans() {
-    const [vansData, setVansData] = React.useState([]);
+    const data = useLoaderData();
+    const vansData = data.vans;
 
     const [searchParams, setSearchParams] = useSearchParams();
     const typeFilter = searchParams.get("type");
 
-    React.useEffect(() => {
-        async function setData() {
-            const data = await fetchData("/api/vans")
-            setVansData(data.vans);
-        }
-        setData();
-    }, []);
-
     const filteredVansData =  typeFilter ? 
         vansData.filter(van => van.type.toLowerCase() == typeFilter) :
         vansData;
-
 
     const vansComps = filteredVansData.map(van =>
         <div key={van.id} className="van-tile">
