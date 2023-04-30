@@ -18,7 +18,7 @@ export default function Vans() {
     const filteredVansData =  typeFilter ? 
         vansData.filter(van => van.type.toLowerCase() == typeFilter) :
         vansData;
-
+        
     const vansComps = filteredVansData.map(van =>
         <div key={van.id} className="van-tile">
             <Link 

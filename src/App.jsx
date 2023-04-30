@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider, Routes, Route, createRoutesFromEle
 import About from "./pages/About";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
+import Error from "./components/Error";
 import Vans, {loader as vansLoader} from "./pages/Vans/Vans";
 import VanDetail from "./pages/Vans/VanDetail";
 import Layout from "./components/Layout";
@@ -20,7 +21,12 @@ const router = createBrowserRouter(createRoutesFromElements(
 	<Route element={<Layout />}>
 		<Route index element={<Home />} />
 		<Route path="about" element={<About />} />
-		<Route path="vans" element={<Vans />} loader={vansLoader} />
+		<Route 
+			path="vans" 
+			element={<Vans />} 
+			loader={vansLoader} 
+			errorElement={<Error />}
+		/>
 		<Route path="vans/:id" element={<VanDetail />} />
 		<Route path="host" element={<HostLayout />} >
 			<Route index element={<Dashboard />} />
