@@ -42,3 +42,13 @@ header a:hover {
 .link-button:hover {
     transform: translate(1px, 1px);
 }
+
+header .login-icon {
+    height: 18px;
+    width: 18px;
+}
+
+header .login-link {
+    display: inline-flex;
+    align-items: center;
+}
