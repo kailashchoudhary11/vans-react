@@ -1,19 +1,16 @@
 import React from "react";
 import "../../server/server";
 import "./HostVans.css";
-import { Link } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
 import { fetchData } from "../../api";
 
-export default function HostVans() {
-    const [hostVans, setHostVans] = React.useState([]);
+export function loader() {
+    return fetchData("/api/host/vans");
+}
 
-    React.useEffect(() => {
-        async function loadHostVans() {
-            const data = await fetchData("/api/host/vans");
-            setHostVans(data.vans);
-        }
-        loadHostVans();
-    }, []);
+export default function HostVans() {
+    const loaderData = useLoaderData();
+    const hostVans = loaderData.vans;
 
     const hostVanEls = hostVans.map(van => (
         <Link
@@ -30,6 +27,7 @@ export default function HostVans() {
             </div>
         </Link>
     ));
+    
     return (
         <section>
             <h1 className="host-vans-title">Your listed vans</h1>
