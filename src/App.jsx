@@ -3,7 +3,7 @@ import { createBrowserRouter, RouterProvider, Routes, Route, createRoutesFromEle
 import About from "./pages/About";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
-import Login from "./pages/Login";
+import Login, {loader as loginLoader} from "./pages/Login";
 import Error from "./components/Error";
 import Vans, { loader as vansLoader } from "./pages/Vans/Vans";
 import VanDetail, { loader as VanDetailLoader } from "./pages/Vans/VanDetail";
@@ -78,7 +78,7 @@ const router = createBrowserRouter(createRoutesFromElements(
 				/>
 			</Route>
 		</Route>
-		<Route path="login" element={<Login />} />
+		<Route loader={loginLoader} path="login" element={<Login />} />
 		<Route path="*" element={<NotFound />} />
 	</Route>
 ));

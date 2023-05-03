@@ -1,11 +1,18 @@
 import React from "react";
 import "./Login.css";
+import {useLoaderData} from "react-router-dom";
+
+export function loader({request}) {
+    return new URL(request.url).searchParams.get('message');
+}
 
 export default function Login() {
     const [formData, setFormData] = React.useState({
         email: "",
         password: "",
     });
+
+    const message = useLoaderData();
 
     function handleSubmit(e) {
         e.preventDefault();
@@ -23,8 +30,9 @@ export default function Login() {
     }
 
     return (
-        <div className="login-container">
+        <div className="login-container">   
             <h1>Sign in to your account</h1>
+            {message && <h3 className="red">{message}</h3>}
             <form onSubmit={handleSubmit} className="login-form">
                 <input
                     name="email"
