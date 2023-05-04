@@ -5,9 +5,9 @@ import "./HostVanDetail.css";
 import { fetchData } from "../../api";
 import { requireAuth } from "../../utils";
 
-export async function loader(request) {
-    await requireAuth();
-    const {id} = request.params;
+export async function loader({request, params}) {
+    await requireAuth(request);
+    const {id} = params;
     return  fetchData(`/api/host/vans/${id}`);
 }
 

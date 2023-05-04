@@ -9,16 +9,19 @@ export async function loader({ request }) {
 
 export async function action({ request }) {
     const formData = await request.formData();
+
     const email = formData.get('email');
     const password = formData.get('password');
+
+    const redirectTo = new URL(request.url).searchParams.get('redirectTo');
+
     try {
         const data = await loginUser({ email, password });
         localStorage.setItem('loggedIn', true);
-        return redirect("/host");
+        return redirect(redirectTo || "/host");
     } catch(error) {
         return error;
     }
-    return null;
 }
 
 export default function Login() {
