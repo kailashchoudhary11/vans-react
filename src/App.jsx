@@ -3,7 +3,7 @@ import { createBrowserRouter, RouterProvider, Routes, Route, createRoutesFromEle
 import About from "./pages/About";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
-import Login, {loader as loginLoader} from "./pages/Login";
+import Login, { loader as loginLoader, action as loginAction } from "./pages/Login";
 import Error from "./components/Error";
 import Vans, { loader as vansLoader } from "./pages/Vans/Vans";
 import VanDetail, { loader as VanDetailLoader } from "./pages/Vans/VanDetail";
@@ -17,7 +17,7 @@ import HostVanPricing from "./pages/Host/HostVanPricing";
 import HostVanPhotos from "./pages/Host/HostVanPhotos";
 import HostVanInfo from "./pages/Host/HostVanInfo";
 import HostLayout from "./components/HostLayout";
-import {requireAuth} from "./utils";
+import { requireAuth } from "./utils";
 
 const router = createBrowserRouter(createRoutesFromElements(
 	<Route element={<Layout />}>
@@ -36,7 +36,7 @@ const router = createBrowserRouter(createRoutesFromElements(
 		/>
 		<Route path="host" element={<HostLayout />} >
 			<Route
-				loader={async () => (await requireAuth())}
+				loader={async () => await requireAuth()}
 				index
 				element={<Dashboard />}
 			/>
@@ -78,7 +78,12 @@ const router = createBrowserRouter(createRoutesFromElements(
 				/>
 			</Route>
 		</Route>
-		<Route loader={loginLoader} path="login" element={<Login />} />
+		<Route
+			loader={loginLoader}
+			action={loginAction}
+			path="login"
+			element={<Login />}
+		/>
 		<Route path="*" element={<NotFound />} />
 	</Route>
 ));
