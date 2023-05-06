@@ -1,38 +1,37 @@
-import React from "react";
+import React, { Suspense } from "react";
 import "../../server/server";
 import "./HostVans.css";
-import { Link, useLoaderData } from "react-router-dom";
+import { Link, useLoaderData, defer, Await } from "react-router-dom";
 import { fetchData } from "../../api";
 import { requireAuth } from "../../utils";
 
-export async function loader({request}) {
+export async function loader({ request }) {
     await requireAuth(request);
-    return fetchData("/api/host/vans");
+    return defer({ data: fetchData("/api/host/vans") });
 }
 
 export default function HostVans() {
-    const loaderData = useLoaderData();
-    const hostVans = loaderData.vans;
+    const dataPromises = useLoaderData();
 
-    const hostVanEls = hostVans.map(van => (
-        <Link
-            to={van.id}
-            key={van.id}
-            className="host-van-link-wrapper"
-        >
-            <div className="host-van-single" key={van.id}>
-                <img src={van.imageUrl} alt={`Photo of ${van.name}`} />
-                <div className="host-van-info">
-                    <h3>{van.name}</h3>
-                    <p>${van.price}/day</p>
+    function renderHostVans(data) {
+        const hostVans = data.vans;
+
+        const hostVanEls = hostVans.map(van => (
+            <Link
+                to={van.id}
+                key={van.id}
+                className="host-van-link-wrapper"
+            >
+                <div className="host-van-single" key={van.id}>
+                    <img src={van.imageUrl} alt={`Photo of ${van.name}`} />
+                    <div className="host-van-info">
+                        <h3>{van.name}</h3>
+                        <p>${van.price}/day</p>
+                    </div>
                 </div>
-            </div>
-        </Link>
-    ));
-    
-    return (
-        <section>
-            <h1 className="host-vans-title">Your listed vans</h1>
+            </Link>
+        ));
+        return (
             <div className="host-vans-list">
                 {
                     hostVans.length > 0 ? (
@@ -41,10 +40,21 @@ export default function HostVans() {
                         </section>
 
                     ) : (
-                            <h2>Loading...</h2>
-                        )
+                        <h2>Loading...</h2>
+                    )
                 }
             </div>
+        );
+    }
+
+    return (
+        <section>
+            <h1 className="host-vans-title">Your listed vans</h1>
+            <Suspense fallback={<h2>Loading Host Vans...</h2>}>
+                <Await resolve={dataPromises.data}>
+                    {renderHostVans}
+                </Await>
+            </Suspense>
         </section>
     );
 }
