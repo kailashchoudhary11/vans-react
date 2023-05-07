@@ -2,10 +2,10 @@ import React, { Suspense } from "react";
 import "../../server/server";
 import "./Vans.css";
 import { Link, useSearchParams, useLoaderData, defer, Await } from "react-router-dom";
-import { fetchData } from "../../api";
+import { getVans } from "../../api";
 
 export async function loader() {
-    return defer({ data: fetchData("/api/vans") });
+    return defer({ vans: getVans() });
 }
 
 export default function Vans() {
@@ -25,8 +25,7 @@ export default function Vans() {
         });
     }
 
-    function renderVanElements(data) {
-        const vansData = data.vans;
+    function renderVanElements(vansData) {
         const filteredVansData = typeFilter ?
             vansData.filter(van => van.type.toLowerCase() == typeFilter) :
             vansData;
@@ -68,7 +67,7 @@ export default function Vans() {
         <div className="van-list-container">
             <h1>Explore our van options</h1>
             <Suspense fallback={<h2>Loading Vans...</h2>}>
-                <Await resolve={dataPromises.data}>
+                <Await resolve={dataPromises.vans}>
                     {
                         renderVanElements
                     }

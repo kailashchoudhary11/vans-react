@@ -1,20 +1,19 @@
-import React, {Suspense} from "react";
+import React, { Suspense } from "react";
 import { Link, useLocation, useLoaderData, defer, Await } from "react-router-dom";
 import "../../server/server";
 import "./VanDetail.css";
-import { fetchData } from "../../api";
+import { getVan } from "../../api";
 
 export function loader(req) {
     const { id } = req.params;
-    return defer({data : fetchData(`/api/vans/${id}`)});
+    return defer({ van: getVan(id) });
 }
 
 export default function VanDetail() {
     const { state } = useLocation();
     const dataPromises = useLoaderData();
 
-    function renderVan(data) {
-        const van = data.vans;
+    function renderVan(van) {
 
         return (
             <div className="van-detail">
@@ -38,7 +37,7 @@ export default function VanDetail() {
                 &larr; <span>Back to {`${state?.type ? state.type : "all"}`} vans</span>
             </Link>
             <Suspense fallback={<h1>Loading Van...</h1>}>
-                <Await resolve={dataPromises.data}>
+                <Await resolve={dataPromises.van}>
                     {renderVan}
                 </Await>
             </Suspense>

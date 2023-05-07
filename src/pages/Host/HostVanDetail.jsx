@@ -2,13 +2,13 @@ import React, { Suspense } from "react";
 import { Link, NavLink, Outlet, useLoaderData, defer, Await } from "react-router-dom";
 import "../../server/server";
 import "./HostVanDetail.css";
-import { fetchData } from "../../api";
+import { getVan } from "../../api";
 import { requireAuth } from "../../utils";
 
 export async function loader({ request, params }) {
     await requireAuth(request);
     const { id } = params;
-    return defer({ data: fetchData(`/api/host/vans/${id}`) });
+    return defer({ van: getVan(id, true) });
 }
 
 export default function HostVanDetail() {
@@ -20,8 +20,7 @@ export default function HostVanDetail() {
         color: "#161616",
     };
 
-    function renderVanDetail(data) {
-        const van = data.vans;
+    function renderVanDetail(van) {
         return (
             <>
                 <div className="host-van-detail-layout-container">
@@ -72,7 +71,7 @@ export default function HostVanDetail() {
                 className="back-button"
             >&larr; <span>Back to all vans</span></Link>
             <Suspense fallback={<h1>Loading Van...</h1>}>
-                <Await resolve={dataPromises.data}>
+                <Await resolve={dataPromises.van}>
                     {renderVanDetail}
                 </Await>
             </Suspense>

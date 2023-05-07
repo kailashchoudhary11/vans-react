@@ -2,20 +2,18 @@ import React, { Suspense } from "react";
 import "../../server/server";
 import "./HostVans.css";
 import { Link, useLoaderData, defer, Await } from "react-router-dom";
-import { fetchData } from "../../api";
+import { getHostVans } from "../../api";
 import { requireAuth } from "../../utils";
 
 export async function loader({ request }) {
     await requireAuth(request);
-    return defer({ data: fetchData("/api/host/vans") });
+    return defer({ vans: getHostVans(null, true) });
 }
 
 export default function HostVans() {
     const dataPromises = useLoaderData();
 
-    function renderHostVans(data) {
-        const hostVans = data.vans;
-
+    function renderHostVans(hostVans) {
         const hostVanEls = hostVans.map(van => (
             <Link
                 to={van.id}
@@ -51,7 +49,7 @@ export default function HostVans() {
         <section>
             <h1 className="host-vans-title">Your listed vans</h1>
             <Suspense fallback={<h2>Loading Host Vans...</h2>}>
-                <Await resolve={dataPromises.data}>
+                <Await resolve={dataPromises.vans}>
                     {renderHostVans}
                 </Await>
             </Suspense>
